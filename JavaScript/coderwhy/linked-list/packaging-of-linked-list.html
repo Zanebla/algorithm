@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function LinkedList () {
+      function Node (data) {
+        this.data = data
+        this.next = null
+      }
+
+      this.head = null
+      this.length = 0
+
+      LinkedList.prototype.append = function (data) {
+        var newNode = new Node(data)
+
+        if (this.length == 0) {
+          this.head = newNode
+        } else {
+          var current = this.head
+          while (current.next) {
+            current = current.next
+          }
+          current.next = newNode
+        }
+
+        this.length += 1
+      }
+
+      LinkedList.prototype.toString = function () {
+        var current = this.head
+        var listString = ''
+
+        while (current) {
+          listString += current.data + ' '
+          current = current.next
+        }
+
+        return listString
+      }
+
+      LinkedList.prototype.insert = function (position, data) {
+        if (position < 0 || position > this.length) return false
+
+        var newNode = new Node(data)
+
+        if (position == 0) {
+          newNode.next = this.head
+          this.head = newNode
+        } else {
+          var index = 0
+          var current = this.head
+          var previous = null
+          while (index++ < position) {
+            previous = current
+            current = current.next
+          }
+
+          newNode.next = current
+          previous.next = newNode
+        }
+
+        this.length += 1
+        return true
+      }
+
+      LinkedList.prototype.get = function (position) {
+        if (position < 0 || position >= this.length) return null
+
+        var current = this.head
+        var index = 0
+        while (index++ < position) {
+          current = current.next
+        }
+        return current.data
+      }
+
+      LinkedList.prototype.indexOf = function (data) {
+        var current = this.head
+        var index = 0
+
+        while (current) {
+          if (current.data == data) {
+            return index
+          }
+          current = current.next
+          index += 1
+        }
+
+        return -1
+      }
+
+      LinkedList.prototype.update = function (position, newData) {
+        if (position < 0 || position >= this.length) return false
+
+        var current = this.head
+        var index = 0
+        while (index++ < position) {
+          current = current.next
+        }
+        current.data = newData
+        return true
+      }
+
+      LinkedList.prototype.removeAt = function (position) {
+        if (position < 0 || position >= this.length) return null
+        var current = this.head
+        if (position == 0) {
+          this.head = this.head.next
+        } else {
+          var index = 0
+          var previous = null
+          while (index++ < position) {
+            previous = current
+            current = current.next
+          }
+          previous.next = current.next
+        }
+        this.length -= 1
+        return current.data
+      }
+
+      LinkedList.prototype.remove = function (data) {
+        var position = this.indexOf(data)
+        return this.removeAt(position)
+      }
+
+      LinkedList.prototype.isEmpty = function () {
+        return this.length == 0
+      }
+
+      LinkedList.prototype.size = function () {
+        return this.length
+      }
+    }
+
+    var list = new LinkedList()
+
+    list.append('zane')
+    list.append('zeh')
+    list.append('tht')
+    // alert(list)
+
+    list.insert(0, 'cws')
+    list.insert(3, 'lh')
+    list.insert(5, 'ljd')
+    // alert(list)
+
+    // alert(list.get(0))
+    // alert(list.get(1))
+    // alert(list.get(2))
+
+    // alert(list.indexOf('zane'))
+    // alert(list.indexOf('cws'))
+    // alert(list.indexOf('hh'))
+
+    // alert(list.update(0, 'zanebla'))
+    // alert(list.get(0))
+
+    alert(list.removeAt(5))
+    alert(list)
+  </script>
+</body>
+
+</html>
