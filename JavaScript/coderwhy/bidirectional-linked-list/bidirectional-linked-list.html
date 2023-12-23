@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function DoublyLinkedList () {
+      this.head = null
+      this.tail = null
+      this.length = 0
+      function Node (data) {
+        this.data = data
+        this.prev = null
+        this.next = null
+      }
+
+      DoublyLinkedList.prototype.append = function (data) {
+        var newNode = new Node(data)
+
+        if (this.length == 0) {
+          this.head = newNode
+        } else {
+          newNode.prev = this.tail
+          this.tail.next = newNode
+        }
+        this.tail = newNode
+        this.length += 1
+      }
+
+      DoublyLinkedList.prototype.toString = function () {
+        return this.backwardString()
+      }
+
+      DoublyLinkedList.prototype.forwardString = function () {
+        var current = this.tail
+        var resultString = ""
+
+        while (current) {
+          resultString += current.data + " "
+          current = current.prev
+        }
+
+        return resultString
+      }
+
+      DoublyLinkedList.prototype.backwardString = function () {
+        var current = this.head
+        var resultString = ""
+
+        while (current) {
+          resultString += current.data + " "
+          current = current.next
+        }
+
+        return resultString
+      }
+
+      DoublyLinkedList.prototype.insert = function (position, data) {
+        if (position < 0 || position > this.length) return false
+
+        var newNode = new Node(data)
+
+        if (this.length == 0) {
+          this.head = newNode
+          this.tail = newNode
+        } else {
+          if (position == 0) {
+            this.head.prev = newNode
+            newNode.next = this.head
+            this.head = newNode
+          } else if (position == this.length) {
+            this.tail.next = newNode
+            newNode.prev = this.tail
+            this.tail = newNode
+          } else {
+            var current = this.head
+            var index = 0
+            while (index++ < position) {
+              current = current.next
+            }
+            newNode.prev = current.prev
+            current.prev.next = newNode
+            newNode.next = current
+            current.prev = newNode
+          }
+        }
+
+        this.length += 1
+        return true
+      }
+
+      DoublyLinkedList.prototype.get = function (position) {
+        if (position < 0 || position >= length) return null
+
+        if (position <= this.length / 2) {
+          var current = this.head
+          var index = 0
+          while (index++ < position) {
+            current = current.next
+          }
+          return current.data
+        } else {
+          var current = this.tail
+          var index = this.length - 1
+          while (index-- > position) {
+            current = current.prev
+          }
+          return current.data
+        }
+
+      }
+
+      DoublyLinkedList.prototype.indexOf = function (data) {
+        var current = this.head
+        var index = 0
+        while (current) {
+          if (current.data == data) {
+            return index
+          }
+          current = current.next
+          index += 1
+        }
+        return -1
+      }
+
+      DoublyLinkedList.prototype.update = function (position, newData) {
+        if (position < 0 || position >= this.length) return false
+
+        if (position <= this.length / 2) {
+          var current = this.head
+          var index = 0
+          while (index++ < position) {
+            current = current.next
+          }
+          current.data = newData
+        } else {
+          var current = this.tail
+          var index = this.length - 1
+          while (index-- > position) {
+            current = current.prev
+          }
+          current.data = newData
+        }
+        return true
+      }
+
+      DoublyLinkedList.prototype.removeAt = function (position) {
+        if (position < 0 || position >= this.length) return null
+
+        var current = this.head
+        if (this.length == 1) {
+          this.head = null
+          this.tail = null
+        } else {
+          if (position == 0) {
+            this.head.next.prev = null
+            this.head = this.head.next
+          } else if (position == this.length - 1) {
+            current = this.tail
+            this.tail.prev.next = null
+            this.tail = this.tail.prev
+          } else {
+            var index = 0
+            while (index++ < position) {
+              current = current.next
+            }
+            current.prev.next = current.next
+            current.next.prev = current.prev
+          }
+        }
+
+        this.length -= 1
+        return current.data
+      }
+
+      DoublyLinkedList.prototype.remove = function (data) {
+        return removeAt(this.indexOf(data))
+      }
+
+      DoublyLinkedList.prototype.isEmpty = function () {
+        return this.length == 0
+      }
+
+      DoublyLinkedList.prototype.size = function () {
+        return this.length
+      }
+
+      DoublyLinkedList.prototype.getHead = function () {
+        return this.head.data
+      }
+
+      DoublyLinkedList.prototype.getTail = function () {
+        return this.tail.data
+      }
+    }
+
+    var list = new DoublyLinkedList()
+
+    list.append('zane')
+    list.append('cws')
+    list.append('zeh')
+
+    // alert(list)
+    // alert(list.backwardString())
+    // alert(list.forwardString())
+
+    list.insert(0, 'zanebla')
+    list.insert(2, 'lh')
+    list.insert(5, 'ljd')
+
+    alert(list)
+
+    list.update(0, 'zaneblae')
+    list.update(1, 'zanea')
+    list.update(5, 'wsblue')
+
+    alert(list)
+  </script>
+</body>
+
+</html>
