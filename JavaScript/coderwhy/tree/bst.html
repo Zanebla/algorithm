@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 封装二叉搜索树
+    function BinarySearchTree () {
+
+      function Node (key) {
+        this.key = key
+        this.left = null
+        this.right = null
+      }
+
+      // 属性
+      this.root = null
+
+      // 方法
+      // 插入数据：对外暴露给与用户调用的方法
+      BinarySearchTree.prototype.insert = function (key) {
+        // 1 根据key创建节点
+        var newNode = new Node(key)
+
+        // 2 判断根节点是否有值
+        if (this.root == null) {
+          this.root = newNode
+        } else {
+          this.insertNode(this.root, newNode)
+        }
+      }
+
+      BinarySearchTree.prototype.insertNode = function (node, newNode) {
+        if (newNode.key < node.key) { // 向左查找
+          if (node.left == null) {
+            node.left = newNode
+          } else {
+            this.insertNode(node.left, newNode)
+          }
+        } else { // 向右查找
+          if (node.right == null) {
+            node.right = newNode
+          } else {
+            this.insertNode(node.right, newNode)
+          }
+        }
+      }
+
+      // 树的遍历
+      // 先序遍历
+      BinarySearchTree.prototype.preOrderTraversal = function (handler) {
+        this.preOrderTraversalNode(this.root, handler)
+      }
+
+      BinarySearchTree.prototype.preOrderTraversalNode = function (node, handler) {
+        if (node != null) {
+          // 1 处理经过的节点
+          handler(node.key)
+
+          // 2 处理经过节点的左子节点
+          this.preOrderTraversalNode(node.left, handler)
+
+          // 3 处理经过节点的右子节点
+          this.preOrderTraversalNode(node.right, handler)
+        }
+      }
+
+      // 中序遍历
+      BinarySearchTree.prototype.midOrderTraversal = function (handler) {
+        this.midOrderTraversalNode(this.root, handler)
+      }
+
+      BinarySearchTree.prototype.midOrderTraversalNode = function (node, handler) {
+        if (node != null) {
+          // 1 查找经过节点的左子节点
+          this.midOrderTraversalNode(node.left, handler)
+
+          // 2 处理经过的节点
+          handler(node.key)
+
+          // 3 查找经过节点的右子节点
+          this.midOrderTraversalNode(node.right, handler)
+        }
+      }
+
+      // 后序遍历
+      BinarySearchTree.prototype.postOrderTraversal = function (handler) {
+        this.postOrderTraversalNode(this.root, handler)
+      }
+
+      BinarySearchTree.prototype.postOrderTraversalNode = function (node, handler) {
+        if (node != null) {
+          // 1 查找经过节点的左子节点
+          this.postOrderTraversalNode(node.left, handler)
+
+          // 2 查找经过节点的右子节点
+          this.postOrderTraversalNode(node.right, handler)
+
+          // 3 处理经过的节点
+          handler(node.key)
+        }
+      }
+
+      // 最大值
+      BinarySearchTree.prototype.max = function () {
+        // 获取根节点
+        var node = this.root
+        var key = null
+        while (node.right != null) {
+          node = node.right
+          key = node.key
+        }
+        return key
+      }
+
+      // 最小值
+      BinarySearchTree.prototype.min = function () {
+        var node = this.root
+        var key = null
+        while (node.left != null) {
+          node = node.left
+          key = node.key
+        }
+        return key
+      }
+    }
+
+    var bst = new BinarySearchTree()
+
+    // 插入数据
+    bst.insert(11)
+    bst.insert(7)
+    bst.insert(15)
+    bst.insert(5)
+    bst.insert(3)
+    bst.insert(9)
+    bst.insert(8)
+    bst.insert(10)
+    bst.insert(13)
+    bst.insert(12)
+    bst.insert(14)
+    bst.insert(20)
+    bst.insert(18)
+    bst.insert(25)
+    bst.insert(6)
+
+    var resultString = ""
+    bst.preOrderTraversal(function (key) {
+      resultString += key + " "
+    })
+    // alert(resultString)
+
+    resultString = ""
+    bst.midOrderTraversal(function (key) {
+      resultString += key + " "
+    })
+    // alert(resultString)
+
+    resultString = ""
+    bst.postOrderTraversal(function (key) {
+      resultString += key + " "
+    })
+    // alert(resultString)
+
+    alert(bst.max())
+    alert(bst.min())
+  </script>
+</body>
+
+</html>
