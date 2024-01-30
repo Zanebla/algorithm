@@ -110,23 +110,34 @@
       BinarySearchTree.prototype.max = function () {
         // 获取根节点
         var node = this.root
-        var key = null
         while (node.right != null) {
           node = node.right
-          key = node.key
         }
-        return key
+        return node.key
       }
 
       // 最小值
       BinarySearchTree.prototype.min = function () {
         var node = this.root
-        var key = null
         while (node.left != null) {
           node = node.left
-          key = node.key
         }
-        return key
+        return node.key
+      }
+
+      // 搜索某一个key
+      BinarySearchTree.prototype.search = function (key) {
+        var node = this.root
+        while (node != null) {
+          if (key < node.key) {
+            node = node.left
+          } else if (key > node.key) {
+            node = node.right
+          } else {
+            return true
+          }
+        }
+        return false
       }
     }
 
@@ -167,8 +178,12 @@
     })
     // alert(resultString)
 
-    alert(bst.max())
-    alert(bst.min())
+    // alert(bst.max())
+    // alert(bst.min())
+
+    alert(bst.search(25))
+    alert(bst.search(24))
+    alert(bst.search(2))
   </script>
 </body>
 
