@@ -139,6 +139,60 @@
         }
         return false
       }
+
+      // 删除节点
+      BinarySearchTree.prototype.remove = function (key) {
+        // 1 寻找需要删除的节点
+        // 1.1 定义变量，保存信息
+        var current = this.root
+        var parent = null
+        var isLeftChild = true
+
+        // 1.2 开始寻找删除的节点
+        while (current.key != key) {
+          parent = current
+          if (key < current.key) {
+            isLeftChild = true
+            current = current.left
+          } else {
+            isLeftChild = false
+            current = current.right
+          }
+          // 最后节点
+          if (current == null) return false
+        }
+
+        // 2 根据情况删除节点
+        // 2.1 删除叶子节点
+        if (current.left == null && current.right == null) {
+          if (current == this.root) {
+            this.root = null
+          } else if (isLeftChild) {
+            parent.left = null
+          } else {
+            parent.right = null
+          }
+        }
+
+        // 2.2 删除节点存在一个子节点
+        else if (current.right == null) {
+          if (isLeftChild) {
+            parent.left = current.left
+          } else {
+            parent.right = current.left
+          }
+        }
+
+        else if (current.left == null) {
+          if (isLeftChild) {
+            parent.left = current.left
+          } else {
+            parent.right = current.left
+          }
+        }
+
+        // 2.3 删除节点存在两个子节点
+      }
     }
 
     var bst = new BinarySearchTree()
