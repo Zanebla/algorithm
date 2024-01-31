@@ -176,7 +176,10 @@
 
         // 2.2 删除节点存在一个子节点
         else if (current.right == null) {
-          if (isLeftChild) {
+          if (current == this.root) {
+            this.root = current.left
+          }
+          else if (isLeftChild) {
             parent.left = current.left
           } else {
             parent.right = current.left
@@ -184,14 +187,55 @@
         }
 
         else if (current.left == null) {
-          if (isLeftChild) {
-            parent.left = current.left
+          if (current == this.root) {
+            this.root = current.right
+          }
+          else if (isLeftChild) {
+            parent.left = current.right
           } else {
-            parent.right = current.left
+            parent.right = current.right
           }
         }
 
         // 2.3 删除节点存在两个子节点
+        else {
+          // 1 获取后继节点
+          var successor = this.getSuccessor(current)
+
+          // 2 判断是否根节点
+          if (current == this.root) {
+            this.root = successor
+          } else if (isLeftChild) {
+            parent.left = successor
+          } else {
+            parent.right = successor
+          }
+
+          // 3 将删除节点的左子树 = current.left
+          successor.left = current.left
+        }
+      }
+
+      // 寻找后继方法
+      BinarySearchTree.prototype.getSuccessor = function (delNode) {
+        // 1 定义变量，保存后继
+        var successor = delNode
+        var current = delNode.right
+        var successorParent = delNode
+
+        // 2 循环查找
+        while (current != null) {
+          successorParent = successor
+          successor = current
+          current = current.left
+        }
+
+        // 3 判断寻找的后继节点是否直接是delNode的right节点
+        if (successor != delNode.right) {
+          successorParent.left = successor.right
+          successor.right = delNode.right
+        }
+        return successor
       }
     }
 
@@ -235,9 +279,18 @@
     // alert(bst.max())
     // alert(bst.min())
 
-    alert(bst.search(25))
-    alert(bst.search(24))
-    alert(bst.search(2))
+    // alert(bst.search(25))
+    // alert(bst.search(24))
+    // alert(bst.search(2))
+
+    bst.remove(9)
+    bst.remove(7)
+    bst.remove(15)
+    resultString = ""
+    bst.postOrderTraversal(function (key) {
+      resultString += key + " "
+    })
+    alert(resultString)
   </script>
 </body>
 
